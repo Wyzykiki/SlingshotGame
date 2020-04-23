@@ -4,7 +4,7 @@ class Vector {
         Object.defineProperty ( this, "y", { writable: false, value : y });
     }
 
-    add (v) {
+    add(v) {
         return new Vector(this.x + v.x, this.y + v.y );
     }
 
@@ -12,25 +12,25 @@ class Vector {
         return new Vector(this.x - v.x, this.y - v.y );
     }
 
-    mult (k) {
+    mult(k) {
         return new Vector(this.x * k, this.y * k );
-    };
+    }
 
     dot(v) {
         return this.x * v.x + this.y * v.y;
     }
 
-    norm () {
+    norm() {
         return Math.sqrt(this.dot(this));
     }
 
-    normalize () {
-        return this.mult(1/this.norm ());
+    normalize() {
+        return this.mult(1/this.norm());
     }
 }
 
-Vector.ZERO = new Vector (0,0);
-Vector.UNIT_X = new Vector (1,0);
-Vector.UNIT_Y = new Vector (0,1);
-Vector.MINUS_UNIT_X = new Vector (-1, 0);
-Vector.MINUS_UNIT_Y = new Vector (0, -1);
+Vector.ZERO = new Vector(0, 0);
+Vector.UNIT_X = new Vector(1, 0);
+Vector.UNIT_Y = new Vector(0, 1);
+Vector.MINUS_UNIT_X = new Vector(-1, 0);
+Vector.MINUS_UNIT_Y = new Vector(0, -1);

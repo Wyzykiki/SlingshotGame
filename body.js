@@ -1,5 +1,5 @@
 class Body  {
-    constructor (v, mass) {
+    constructor(v, mass) {
         this.mass = mass || 0;
         this.invMass = 1/this.mass;
         this.velocity = Vector.ZERO;
@@ -8,10 +8,15 @@ class Body  {
         /* begin en bonus */
         this.hasCollision = false;
         /* end en bonus */
-    }
-    move (v) {
+	}
+	
+    move(v) {
         this.origin = this.origin.add(v);
-    }
+	}
+	
+	setPosition(x, y) {
+		this.origin = new Vector(x, y);
+	}
 
 
 
