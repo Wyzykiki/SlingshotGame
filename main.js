@@ -6,6 +6,10 @@ let vitX = 0, vitY = 0;//TODO: a virer
 
 let c1 = null;
 let c2 = null;
+let c3 = null;
+let r1 = null;
+let r2 = null;
+let r3 = null;
 
 let debug = false;
 let debug2 = false;
@@ -62,7 +66,7 @@ function loop() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	
 	if (debug) {
-		// drawSling();
+		//drawSling();
 	
 
 		ctx.save();
@@ -77,6 +81,12 @@ function loop() {
 
 		c1.draw();
 		c2.draw();
+		c3.draw();
+		r1.draw();
+		//r2.draw();
+		r3.draw();
+
+		c1.collisionRect(c2);
 	}
 
 	if (debug2) {
@@ -121,8 +131,12 @@ function init() {
 		// menu = new Menu();
 	// };
 	// xhr.send();
-	c1 = new RectSprite(new Vector(400,200),20,20,1,30,"rgba(0,255,0,0.5)");
-	c2 = new RectSprite(new Vector(400.5,215),20,20,1,60,"rgba(0,255,0,0.5)");
+	c1= new CircleSprite(new Vector (405,203),10,1,"rgba(0,220,220,123");
+	c2= new CircleSprite(new Vector (405,210),10,1,"rgba(0,0,220,123");
+	c3= new CircleSprite(new Vector (475,255),10,1,"rgba(0,220,0,123");
+	r1 = new RectSprite(new Vector(400,200),20,20,1,30,"rgba(0,255,0,0.5)");
+	r2 = new RectSprite(new Vector(400.5,215),20,20,1,60,"rgba(0,255,0,0.5)");
+	r3 = new RectSprite(new Vector(0,0),200,200,1,0,"rgba(0,255,0,0.5)");
 	window.setInterval(loop, 1000/60);
 }
 
