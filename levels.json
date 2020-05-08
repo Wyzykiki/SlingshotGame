@@ -1,0 +1,31 @@
+[
+	{
+		"obstacles" : [
+			{
+				"x" : 0,
+				"y" : 0,
+				"width" : 10,
+				"height" : 10
+			}
+		],
+		"targets" : [
+			{
+				"x" : 400,
+				"y" : 100,
+				"type" : "basic"
+			},
+			{
+				"x" : 600,
+				"y" : 300,
+				"type" : "strong"
+			}
+		],
+		"sling" : {
+			"x" : 50,
+			"y" : 50,
+			"radius" : 35,
+			"rappel" : 5
+		},
+		"projectiles" : ["basic"]
+	}
+]

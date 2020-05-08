@@ -11,14 +11,17 @@ class Body  {
 	}
 	
     move(v) {
-        this.origin = this.origin.add(v);
+		this.origin = this.origin.add(v);
+		this.force = Vector.ZERO;
 	}
 	
 	setPosition(x, y) {
 		this.origin = new Vector(x, y);
 	}
 
-
+	applyForce(force) {
+		this.force = this.force.add(force);
+	}
 
 
 

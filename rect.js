@@ -4,7 +4,9 @@ class Rect extends Body {
         this.orientation = angle;
         Object.defineProperty(this, "width", { writable: false, value : width });
         Object.defineProperty(this, "height", { writable: false, value : height });
-        this.center=new Vector (this.origin.x+this.origin.norm()*Math.cos(angle),this.origin.y+this.origin.norm()*Math.sin(angle));
+        let c = new Vector(this.width/2, this.height/2);
+        console.log(c.norm());
+        this.center=new Vector (this.origin.x+c.norm()*Math.cos((45+angle)*Math.PI/180),this.origin.y+c.norm()*Math.sin((45+angle)*Math.PI/180));
     }
 
 

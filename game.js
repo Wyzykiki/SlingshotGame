@@ -1,7 +1,15 @@
 class Game {
 	constructor(levels) {
 		this.levels = levels;
-		this.renderer = null;
+
+		/** Le moteur physique */
+		this.engine = new Engine();
+
+		/** Le moteur de rendu */
+		this.renderer = new Renderer(this.engine);
+
+		/** Les menus du jeu */
+		this.menu = new Menu();
 
 		/** Le lance pierre */
 		this.sling = null;
@@ -13,15 +21,36 @@ class Game {
 		/** Début et fin du lancer du projectile */
 		this.throwStart = null;
 		this.throwStop = null;
+
+
+		//le lancer a ete fait
+		this.playing = false;
 	}
 
+	update() {
+		this.engine.update();
+	}
+
+	render() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		this.renderer.render();
+		this.menu.draw();
+	}
+
+
 	/** On change le projectile */
-	newProjectile(engine) {
-		//FIXME: enlever proj[0] ?
-		let projectile = this.projectiles[0];
-		engine.add(projectile);
-		if (projectile instanceof BasicProjectile) {
-			this.nbBasic--;
+	newProjectile() {
+		/** On retire le vieux projectile */
+		this.projectiles.slice(0, 1);
+
+		if (this.nbBasic > 0) {
+			let projectile = this.projectiles[0];
+			this.engine.add(projectile);
+			if (projectile instanceof BasicProjectile) {
+				this.nbBasic--;
+			}
+		} else {
+			//FIXME: fin de partie
 		}
 	}
 
@@ -29,7 +58,6 @@ class Game {
 	initLevel(n) {
 		let level = this.levels[n];
 		this.sling = level.sling;
-		let engine = new Engine();
 
 		/** Créer les projectiles */
 		for (let i=0; i<level.projectiles.length; i++) {
@@ -43,7 +71,7 @@ class Game {
 			}
 		}
 
-		this.newProjectile(engine);
+		this.newProjectile();
 
 		/** Créer les cibles */
 		for (let i=0; i<level.targets.length; i++) {
@@ -58,7 +86,7 @@ class Game {
 				default:
 					break;
 			}
-			engine.add(target);
+			this.engine.add(target);
 		}
 	
 		/** Créer les obstacles */
@@ -66,7 +94,6 @@ class Game {
 			
 		}
 
-		this.renderer = new Renderer(engine);
 		canvas.addEventListener("mousedown", throwDownHandler);
 	}
 };
@@ -84,17 +111,32 @@ function throwDownHandler(ev) {
 	}
 }
 
+/** Gestion du lacher du projectile */
 function throwUpHandler(ev) {
+	/** On retire les événements */
 	canvas.removeEventListener("mousemove", throwMoveHandler);
-
-	game.throwStop = new Vector(game.projectiles[0].origin.x, game.projectiles[0].origin.y);
-
-	console.log(ev);
-	console.log("(" + (game.throwStop.x-game.throwStart.x) + "," + (game.throwStop.y-game.throwStart.y) + ")");
-	vitX = -(game.throwStop.x-game.throwStart.x)/game.sling.radius * game.sling.rappel;
-	vitY = -(game.throwStop.y-game.throwStart.y)/game.sling.radius * game.sling.rappel;
 	canvas.removeEventListener("mousedown", throwDownHandler);
 	canvas.removeEventListener("mouseup", throwUpHandler);
+
+	/** Calcul  */
+	game.throwStop = new Vector(game.projectiles[0].origin.x, game.projectiles[0].origin.y);
+
+	let vitesseX = -(game.throwStop.x-game.throwStart.x)/game.sling.radius * game.sling.rappel;
+	let vitesseY = -(game.throwStop.y-game.throwStart.y)/game.sling.radius * game.sling.rappel;
+	game.projectiles[0].applyForce(new Vector(vitesseX, vitesseY));
+	
+	
+	console.log(ev);
+	console.log("(" + (game.throwStop.x-game.throwStart.x) + "," + (game.throwStop.y-game.throwStart.y) + ")");
+	
+	
+	game.projectiles[0].on = true;
+
+
+	/** TODO: Démare le moteur */
+	game.engine.start();
+	game.playing = true;
+
 }
 
 function throwMoveHandler(ev) {

@@ -1,8 +1,7 @@
-let canvas, ctx, menu, game;
+let canvas, ctx, game;
 
-let lastLoop = new Date();
-
-let vitX = 0, vitY = 0;//TODO: a virer
+let lastFrame = performance.now();
+let last = performance.now();
 
 let c1 = null;
 let c2 = null;
@@ -36,19 +35,20 @@ let demo = [
 		],
 		"sling" : {
 			"x" : 50,
-			"y" : 50,
+			"y" : 350,
 			"radius" : 35,
-			"rappel" : 5
+			"rappel" : 22
 		},
 		"projectiles" : ["basic"]
 	}
 ];
 
+let lag = 0;
 
 /** Fonction de debug */
 function drawSling() {
 	ctx.save();
-	ctx.fillStyle = "rgba(0,0,255,0.5)";
+	ctx.fillStyle = "rgba(0,0,255,0.3)";
 	ctx.beginPath();
 	ctx.ellipse(game.sling.x, game.sling.y, game.sling.radius, game.sling.radius, 0, 0, 2*Math.PI);
 	ctx.fill();
@@ -58,54 +58,40 @@ function drawSling() {
 }
 
 /** Boucle appellé 60 fois par seconde */
-function loop() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+function loop(now) {
+
 	
-	if (debug) {
-		// drawSling();
-	
+	// simule du calcul
+	for (let i=0; i<3000000*lag; i++) {
 
-		ctx.save();
-		ctx.fillStyle = "rgba(0,255,0,0.3)";
-		ctx.beginPath();
-		ctx.ellipse(0, 0, 250, 250, 0, 0, 2*Math.PI);
-		ctx.fill();
-		ctx.closePath();
-		
-		ctx.restore();
-
-
-		c1.draw();
-		c2.draw();
 	}
 
-	if (debug2) {
-		// console.log(cpt + " : " + vitX + ", " + c.x);
-		// console.log(vitX);
+	game.update();
+	
+	/** Si on a calculer l'image avant le rafraichissement */
+	if (now - last < 16.7) {
 		
-		// vitX += accel;
-		game.projectiles[0].move(new Vector(vitX*1000/120, vitY*1000/120));
-		
-		if (game.projectiles[0].origin.x < 0 || game.projectiles[0].origin.x > canvas.width) {
-			vitX = -vitX;
-		}
-		if (game.projectiles[0].origin.y < 0 || game.projectiles[0].origin.y > canvas.height) {
-			vitY = -vitY;
-		}
-		game.renderer.render();
-		
-		
-	}
-	// menu.draw();
+		let fps = Math.round(1000 / (now - lastFrame));
+		let div = document.getElementById("fps");
+		div.innerHTML = fps + " FPS";
 
-    let thisLoop = new Date();
-    let fps = 1000 / (thisLoop - lastLoop);
-	lastLoop = thisLoop;
-	let div = document.getElementById("fps");
-	div.innerHTML = fps;
+		lastFrame = now;
+			
+		
+		game.render();
+		if (debug) {
+			drawSling();
+			// c1.draw();
+			// c2.draw();
+			// c3.draw();
+		}
+	}	
 
+	last=now;
+	requestAnimationFrame(loop);
 	// let cpt = document.getElementById("cpt");
 	// cpt.innerHTML = game.nbBasic;
+	
 }
 
 /** Fonction qui s'execute au chargement de la page */
@@ -116,14 +102,15 @@ function init() {
 
 	// xhr.open("GET", "levels.json");
 	// xhr.onload = () => {
-		// game = new Game(demo);
+		game = new Game(demo);
 		// game = new Game(JSON.parse(xhr.responseText));
-		// menu = new Menu();
 	// };
 	// xhr.send();
-	c1 = new RectSprite(new Vector(400,200),20,20,1,30,"rgba(0,255,0,0.5)");
-	c2 = new RectSprite(new Vector(400.5,215),20,20,1,60,"rgba(0,255,0,0.5)");
-	window.setInterval(loop, 1000/60);
+	// c1 = new RectSprite(new Vector(400,200),20,20,1,30,"rgba(0,255,0,0.5)");
+	// c2 = new RectSprite(new Vector(400.5,215),20,20,1,60,"rgba(0,255,0,0.5)");
+	// c3 = new RectSprite(new Vector(0,0),200,200,1,45,"rgba(0,255,0,0.5)");
+
+	requestAnimationFrame(loop);
 }
 
 window.addEventListener("load", init);

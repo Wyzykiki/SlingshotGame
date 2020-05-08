@@ -44,7 +44,7 @@ function titleHandler(ev) {
 	if (x>=300 && x<500 && y>=150 && y<250) {
 		console.log("play");
 		canvas.removeEventListener("mouseup", titleHandler);
-		menu.selec();
+		game.menu.selec();
 	}
 }
 
@@ -54,6 +54,6 @@ function selecHandler(ev) {
 	if (x>=20 && x<120 && y>=20 && y<120) {
 		console.log("click");
 		canvas.removeEventListener("mouseup", selecHandler);
-		menu.game();
+		game.menu.game();
 	}
 }
