@@ -47,20 +47,23 @@ class Circle extends Body {
         let Ex = (d/(a*d-b*c))*(Ee.x-B.x)-(b/(a*d-b*c))*(Ee.y-B.y);
         let Ey=(-c/(a*d-b*c))*(Ee.x-B.x)+(a/(a*d-b*c))*(Ee.y-B.y);
         let E=new Vector(Ex,Ey);
-        let Mm=new Vector (rect.origin.x,rect.origin.y);
+        let Mm=new Vector (this.origin.x,this.origin.y);
         let Mx=(d/(a*d-b*c))*(Mm.x-B.x)-(b/(a*d-b*c))*(Mm.y-B.y);
         let My=(-c/(a*d-b*c))*(Mm.x-B.x)+(a/(a*d-b*c))*(Mm.y-B.y);
         let M =new Vector(Mx,My);
         let Fff=new Vector ((Ee.x-Mm.x)*this.radius/Math.abs(Ee.x-Mm.x),(Ee.y-Mm.y)*this.radius/Math.abs(Ee.y-Mm.y));
         let Ff=Mm.add(Fff);
-        console.log("Ee puis Ff");
-        console.log(Ee);
-        console.log(Ff);
-
+        // console.log("Ee puis Ff");
+        // console.log(Ee);
+        // console.log(Ff);
+        // console.log(Mm);
+        // console.log(A);
+        // console.log(B);
+        // console.log(C);
          let Fx=(d/(a*d-b*c))*(Ff.x-B.x)-(b/(a*d-b*c))*(Ff.y-B.y);
          let Fy=(-c/(a*d-b*c))*(Ff.x-B.x)+(a/(a*d-b*c))*(Ff.y-B.y);
          let F =new Vector(Fx,Fy);
-        return this.isInRect(Ff);
+        return rect.isInRect(Ff);
 
     }
 
@@ -76,34 +79,38 @@ class Circle extends Body {
     }
     hasCollCircle(c){
         this.velocity=new Vector(-this.velocity.x/2,-this.velocity.y/2);
-        
+        c.velocity=Vector.ZERO.sub(this.velocity);
     }
     hasCollRect(Rect,where){
         
         if (where=="top"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin=new Vector(this.origin.x,this.origin.y+3);
         }else  if (where=="left"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin=new Vector(this.origin.x-3,this.origin.y);
         }else if (where=="right"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin=new Vector(this.origin.x+3,this.origin.y);
         }else  if (where=="bot"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin=new Vector(this.origin.x,this.origin.y-3);
         }else  if (where=="left-bot"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="right-bot"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="right-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="left-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }
 
     }

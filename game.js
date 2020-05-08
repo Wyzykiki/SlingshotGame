@@ -72,22 +72,24 @@ class Game {
 		}
 
 		this.newProjectile();
+		let r1 = new RectSprite(new Vector(400,400),50,50,1,270,"rgba(0,255,0,0.5)");
+		this.engine.add(r1);
 
 		/** Créer les cibles */
-		for (let i=0; i<level.targets.length; i++) {
-			let target = null
-			switch (level.targets[i].type) {
-				case "basic":
-					target = new BasicTarget(level.targets[i].x, level.targets[i].y);
-					break;
-				case "strong":
-					target = new StrongTarget(level.targets[i].x, level.targets[i].y);
-					break;
-				default:
-					break;
-			}
-			this.engine.add(target);
-		}
+		// for (let i=0; i<level.targets.length; i++) {
+		// 	let target = null
+		// 	switch (level.targets[i].type) {
+		// 		case "basic":
+		// 			target = new BasicTarget(level.targets[i].x, level.targets[i].y);
+		// 			break;
+		// 		case "strong":
+		// 			target = new StrongTarget(level.targets[i].x, level.targets[i].y);
+		// 			break;
+		// 		default:
+		// 			break;
+		// 	}
+		// 	this.engine.add(target);
+		// }
 	
 		/** Créer les obstacles */
 		for (let i=0; i<level.obstacles.length; i++) {

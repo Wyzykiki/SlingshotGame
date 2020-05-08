@@ -147,34 +147,38 @@ class Rect extends Body {
             return "right-top";
         }
     }
+    hasCollCircle(c){
+        this.velocity=new Vector(-this.velocity.x/2,-this.velocity.y/2);
+        c.velocity=Vector.ZERO.sub(this.velocity);
+    }
 
 
     hasCollRect(Rect,where){
         
         if (where=="top"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="left"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else if (where=="right"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="bot"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="left-bot"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="right-bot"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="right-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }else  if (where=="left-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
-            Rect.velocity=rect.velocity.add(Vector.Zero.sub(this.velocity));
+            Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
         }
 
     }
