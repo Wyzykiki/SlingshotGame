@@ -5,6 +5,10 @@ let last = performance.now();
 
 let c1 = null;
 let c2 = null;
+let c3 = null;
+let r1 = null;
+let r2 = null;
+let r3 = null;
 
 let debug = false;
 let debug2 = false;
