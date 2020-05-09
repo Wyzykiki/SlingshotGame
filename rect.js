@@ -42,7 +42,7 @@ class Rect extends Body {
         let C=new Vector (r2.origin.x+r2.height*Math.cos((r2.orientation+Math.PI/2)%(Math.PI*2)),r2.origin.y+r2.height*Math.sin((r2.orientation+Math.PI/2)%(Math.PI*2)));
         let D=new Vector (r2.origin.x+r2.width*Math.cos(r2.orientation%(Math.PI*2))+r2.height*Math.cos((r2.orientation+Math.PI/2)%(Math.PI*2)),r2.origin.y+r2.height*Math.sin((r2.orientation+Math.PI/2)%(Math.PI*2))+r2.width*Math.sin(r2.orientation%(Math.PI*2)));
         
-        return r1.isInRects(A)||r1.isInRects(B)||r1.isInRects(C)||r1.isInRects(D);
+        return r1.isInRect(A)||r1.isInRect(B)||r1.isInRect(C)||r1.isInRect(D);
     }
     
     collisionCircle( circle){
@@ -150,6 +150,7 @@ class Rect extends Body {
     hasCollCircle(c){
         this.velocity=new Vector(-this.velocity.x/2,-this.velocity.y/2);
         c.velocity=Vector.ZERO.sub(this.velocity);
+        
     }
 
 
@@ -158,27 +159,36 @@ class Rect extends Body {
         if (where=="top"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin = new Vector (this.origin.x,this.origin.y+this.height/2);
         }else  if (where=="left"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin = new Vector (this.origin.x-this.width/2,this.origin.y);
         }else if (where=="right"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin = new Vector (this.origin.x+this.width/2,this.origin.y);
         }else  if (where=="bot"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            Rect.origin = new Vector (Rect.origin.x,Rect.origin.y+Rect.height/2);
         }else  if (where=="left-bot"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            Rect.origin = new Vector (Rect.origin.x,Rect.origin.y+Rect.height/2);
+            this.origin = new Vector (this.origin.x+this.width/2,this.origin.y+this.height/2);
         }else  if (where=="right-bot"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin = new Vector (this.origin.x-this.width/2,this.origin.y+this.height/2);
         }else  if (where=="right-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin = new Vector (this.origin.x+this.width/2,this.origin.y+this.height/2);
         }else  if (where=="left-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
+            this.origin = new Vector (this.origin.x-this.width/2,this.origin.y+this.height/2);
         }
 
     }
