@@ -16,14 +16,19 @@ class Game {
 
 		/** Les projectiles en réserve plus celui qui est actif, le premier du tableau. */
 		this.projectiles = [];
+		this.nProj = 0;
 		this.nbBasic = 0;
+		this.nbLourd = 0;
+		this.nbLeger = 0;
 
 		/** Début et fin du lancer du projectile */
 		this.throwStart = null;
 		this.throwStop = null;
 
 		/** Level courrant */
-		this.curLevel = 0;
+		this.curLevel = -1;
+		/** le nombre de niveau */
+		this.levelMax = levels.length;
 
 		//le lancer a ete fait
 		this.playing = false;
@@ -32,18 +37,33 @@ class Game {
 	update() {
 		this.engine.update();
 
-		// let win = true;
-        // for (let i=0; i<this.engine.objects.length; i++) {
-        //     let obj = this.engine.objects[i];
-        //     if (obj instanceof Target){
-        //         win = false;
-        //     }
-		// }
+		let win = true;
+        for (let i=0; i<this.engine.objects.length; i++) {
+            let obj = this.engine.objects[i];
+            if (obj instanceof Target){
+                win = false;
+            }
+		}
 		
-		// if (win && this.curLevel != 0) {
-		// 	this.curLevel++;
-		// 	this.initLevel(this.curLevel);
-		// }
+		if (win && this.curLevel != -1) {
+			let div = document.getElementById("winlose");
+			div.innerHTML = "Vous avez gagné le niveau " + (this.curLevel+1);
+			if (this.curLevel+1 < this.levelMax) {
+				this.curLevel++;
+
+
+				for (let i=0; i<this.engine.objects.length; i++) {
+					if (this.engine.objects[i] == this.projectiles[0]) {
+						this.engine.remove(i);
+					}
+				}
+				this.projectiles.splice(0, this.projectiles.lenght);
+				this.engine.clear();
+				game.playing = false;
+				
+				this.initLevel(this.curLevel);
+			}
+		}
 	}
 
 	render() {
@@ -56,17 +76,40 @@ class Game {
 	/** On change le projectile */
 	newProjectile() {
 		/** On retire le vieux projectile */
-		this.projectiles.slice(0, 1);
+		this.projectiles.splice(0, 1);
 
-		if (this.nbBasic > 0) {
+		if (this.nProj > 0) {
 			let projectile = this.projectiles[0];
 			this.engine.add(projectile);
 			if (projectile instanceof BasicProjectile) {
 				this.nbBasic--;
+			} else {
+				if (projectile instanceof LourdProjectile) {
+					this.nbLourd--;
+				} else {
+					if (projectile instanceof LegerProjectile) {
+						this.nbLeger--;
+					}
+				}
 			}
+			this.nProj--;
+			canvas.addEventListener("mousedown", throwDownHandler);
 		} else {
-			//FIXME: fin de partie
+			let div = document.getElementById("winlose");
+			div.innerHTML = "Vous avez perdu";
 		}
+	}
+
+	reset() {
+		for (let i=0; i<this.engine.objects.length; i++) {
+			if (this.engine.objects[i] == this.projectiles[0]) {
+				this.engine.remove(i);
+			}
+		}
+		this.projectiles.splice(0, this.projectiles.length);
+		this.engine.clear();
+		game.playing = false;
+		this.initLevel(this.curLevel);
 	}
 
 	/** Initialisation des variables de l'environnement pour le niveau sélectionné. */
@@ -74,6 +117,13 @@ class Game {
 		this.curLevel = n;
 		let level = this.levels[n];
 		this.sling = level.sling;
+		this.nProj = level.projectiles.length;
+		this.nbBasic = 0;
+		this.nbLourd = 0;
+		this.nbLeger = 0;
+
+		//un projectile qui sera supprimer de suite
+		this.projectiles.push(new BasicProjectile(this.sling.x, this.sling.y));
 
 		/** Créer les projectiles */
 		for (let i=0; i<level.projectiles.length; i++) {
@@ -82,18 +132,22 @@ class Game {
 					this.projectiles.push(new BasicProjectile(this.sling.x, this.sling.y));
 					this.nbBasic++;
 					break;
+				case "lourd":
+					this.projectiles.push(new LourdProjectile(this.sling.x, this.sling.y));
+					this.nbLourd++;
+					break;
+				case "leger":
+					this.projectiles.push(new LegerProjectile(this.sling.x, this.sling.y));
+					this.nbLeger++;
+					break;
 				default:
 					break;
 			}
 		}
 
+		
 		this.newProjectile();
-		let r1 = new RectSprite(new Vector(700,350),50,50,1,0,"rgba(0,255,0,0.5)");
-		let r2 = new RectSprite(new Vector(700,220),50,50,1,0,"rgba(0,255,0,0.5)");
-		let r3 = new RectSprite(new Vector(550,350),50,50,1,0,"rgba(0,255,0,0.5)");
-		this.engine.add(r1);
-		this.engine.add(r2);
-		// this.engine.add(r3);
+		
 
 		/** Créer les cibles */
 		for (let i=0; i<level.targets.length; i++) {
@@ -127,7 +181,6 @@ class Game {
 			this.engine.add(obstacle);
 		}
 
-		canvas.addEventListener("mousedown", throwDownHandler);
 	}
 };
 
@@ -162,10 +215,8 @@ function throwUpHandler(ev) {
 	console.log(ev);
 	console.log("(" + (game.throwStop.x-game.throwStart.x) + "," + (game.throwStop.y-game.throwStart.y) + ")");
 	
+
 	
-	game.projectiles[0].on = true;
-
-
 	/** TODO: Démare le moteur */
 	game.engine.start();
 	game.playing = true;

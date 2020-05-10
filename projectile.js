@@ -15,3 +15,17 @@ class BasicProjectile extends Projectile {
 	}
 
 }
+
+class LourdProjectile extends Projectile {
+	constructor(x, y) {
+		super(new Vector(x, y), 20, 2, "yellow");
+	}
+
+}
+
+class LegerProjectile extends Projectile {
+	constructor(x, y) {
+		super(new Vector(x, y), 20, 0.5, "cyan");
+	}
+
+}
