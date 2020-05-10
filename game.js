@@ -58,7 +58,7 @@ class Game {
 						this.engine.remove(i);
 					}
 				}
-				this.projectiles.splice(0, this.projectiles.lenght);
+				this.projectiles.splice(0, this.projectiles.length);
 				this.engine.clear();
 				game.playing = false;
 				
