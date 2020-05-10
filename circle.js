@@ -69,8 +69,8 @@ class Circle extends Body {
 
     collisionCircle(c){
         let d = (this.origin.x-c.origin.x)*(this.origin.x-c.origin.x) + (this.origin.y-c.origin.y)*(this.origin.y-c.origin.y)
-        console.log(d);
-        console.log(( (this.radius+c.radius)*( this.radius+c.radius)));
+       // console.log(d);
+        //console.log(( (this.radius+c.radius)*( this.radius+c.radius)));
         if (d> ( (this.radius+c.radius)*( this.radius+c.radius))){
             return false;
         }else{
@@ -86,15 +86,15 @@ class Circle extends Body {
         if (where=="top"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
-            this.origin = new Vector (this.origin.x,this.origin.y+this.height/2);
+            this.origin = new Vector (this.origin.x,this.origin.y+this.radius);
         }else  if (where=="left"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
-            this.origin = new Vector (this.origin.x-this.width/2,this.origin.y);
+            this.origin = new Vector (this.origin.x-this.radius,this.origin.y);
         }else if (where=="right"){
             this.velocity=new Vector(-this.velocity.x/4,this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
-            this.origin = new Vector (this.origin.x+this.width/2,this.origin.y);
+            this.origin = new Vector (this.origin.x+this.radius,this.origin.y);
         }else  if (where=="bot"){
             this.velocity=new Vector(this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
@@ -103,19 +103,19 @@ class Circle extends Body {
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
             Rect.origin = new Vector (Rect.origin.x,Rect.origin.y+Rect.height/2);
-            this.origin = new Vector (this.origin.x+this.width/2,this.origin.y+this.height/2);
+            this.origin = new Vector (this.origin.x+this.radius,this.origin.y+this.radius);
         }else  if (where=="right-bot"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
-            this.origin = new Vector (this.origin.x-this.width/2,this.origin.y+this.height/2);
+            this.origin = new Vector (this.origin.x-this.radius,this.origin.y+this.radius);
         }else  if (where=="right-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
-            this.origin = new Vector (this.origin.x+this.width/2,this.origin.y+this.height/2);
+            this.origin = new Vector (this.origin.x+this.radius,this.origin.y+this.radius);
         }else  if (where=="left-top"){
             this.velocity=new Vector(-this.velocity.x/4,-this.velocity.y/4);
             Rect.velocity=Rect.velocity.add(Vector.ZERO.sub(this.velocity));
-            this.origin = new Vector (this.origin.x-this.width/2,this.origin.y+this.height/2);
+            this.origin = new Vector (this.origin.x-this.radius,this.origin.y+this.radius);
         }
 
     }

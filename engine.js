@@ -29,44 +29,16 @@ class Engine {
 			let obj = this.objects[i];
 
 
-				let gravity = new Vector(0, 1);
+				let gravity = new Vector(0, 0.95);
 				obj.applyForce(gravity);
 				let acc = obj.force;
 				obj.velocity = obj.velocity.add(acc);
-
-
-				// if (i == 1) {
-				// 	console.log(obj.origin);
-				// 	console.log(obj.velocity);
-				// }
-
-			// }
+				let beforeX=obj.origin.x;
+				let beforeY=obj.origin.y;
 				obj.move(obj.velocity);
-				for (let j=0; j<this.objects.length; j++) {
-                    if (i != j) {
-                        let other = this.objects[j];
-
-                        if (other instanceof Rect) {
-                            if (obj.collisionRect(other)) {
-								// console.log("BAAAAAAAAAAAAAM");
-								// console.log(obj.where(other));
-								// console.log(obj.origin.x);
-								// console.log(other.origin.x);
-                                obj.hasCollRect(other, obj.where(other));
-                            }
-                        } 
-                        if (other instanceof Target) {
-                            if (obj.collisionCircle(other)) {
-								obj.hasCollCircle(other);
-								// if (other instanceof Target) {
-									// this.remove(j);
-									// }
-								}
-							}
-						console.log(this.objects);
-                    }
-                }
-
+				if (obj.origin.x<=beforeX+2 && beforeY<=obj.origin.y+2 && obj.origin.x>=beforeX-2 && beforeY>=obj.origin.y-2){
+					obj.velocity=new Vector(0.0,0.0);
+				}
 				let offset = 0
 				if (obj instanceof Circle) {
 					offset = obj.radius;
@@ -75,6 +47,53 @@ class Engine {
 						offset = obj.height;
 					}
 				}
+				// console.log("lalalala les schtroumpfh");
+				// console.log(canvas.height-offset);
+				// console.log(obj.origin.y);
+				if (obj.velocity.y > -1 &&  obj.velocity.y < 1 && obj.origin.y>=canvas.height-offset ) {
+					obj.velocity=new Vector(obj.velocity.x,0);
+				}
+
+			// }
+				for (let j=0; j<this.objects.length; j++) {
+                    if (i != j) {
+                        let other = this.objects[j];
+
+                        if (other instanceof Rect) {
+                            if (obj.collisionRect(other)) {
+								// console.log("BAAAAAAAAAAAAAM");
+								// console.log(obj.where(other));
+								// console.log(obj);
+								// console.log(other);
+								if(obj instanceof Rect){
+									obj.hasCollRect(other);
+								} else{
+								obj.hasCollRect(other, obj.where(other));
+								}
+                            }
+                        } 
+                        if (other instanceof Target) {
+                            if (obj.collisionCircle(other)) {
+								obj.hasCollCircle(other);
+								// if (other instanceof Target) {
+								// console.log(this.objects[i]);	
+								// console.log(this.objects[j]);
+								this.remove(j);
+									// }
+								}
+							}
+						//console.log(this.objects);
+                    }
+                }
+
+				// let offset = 0
+				// if (obj instanceof Circle) {
+				// 	offset = obj.radius;
+				// } else {
+				// 	if (obj instanceof Rect) {
+				// 		offset = obj.height;
+				// 	}
+				// }
 				
 				if (obj.origin.x < 0 || obj.origin.x + offset > canvas.width) {
 					obj.velocity = new Vector(-obj.velocity.x, obj.velocity.y);
@@ -88,7 +107,11 @@ class Engine {
 				
 				/** Freine les objets */
 				if (obj.origin.y == canvas.height-offset) {
-					obj.velocity = obj.velocity.mult(0.85);
+					// if( i == 0)
+					// console.log(obj.velocity);
+					obj.velocity = obj.velocity.mult(0.65);
+					// if( i == 0)
+					// console.log(obj.velocity);
 				}
 				
 				

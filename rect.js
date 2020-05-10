@@ -71,9 +71,9 @@ class Rect extends Body {
         let M =new Vector(Mx,My);
         let Fff=new Vector ((Ee.x-Mm.x)*circle.radius/Math.abs(Ee.x-Mm.x),(Ee.y-Mm.y)*circle.radius/Math.abs(Ee.y-Mm.y));
         let Ff=Mm.add(Fff);
-        console.log("Ee puis Ff");
-        console.log(Ee);
-        console.log(Ff);
+        // console.log("Ee puis Ff");
+        // console.log(Ee);
+        // console.log(Ff);
 
          let Fx=(d/(a*d-b*c))*(Ff.x-B.x)-(b/(a*d-b*c))*(Ff.y-B.y);
          let Fy=(-c/(a*d-b*c))*(Ff.x-B.x)+(a/(a*d-b*c))*(Ff.y-B.y);
@@ -150,6 +150,7 @@ class Rect extends Body {
     hasCollCircle(c){
         this.velocity=new Vector(-this.velocity.x/2,-this.velocity.y/2);
         c.velocity=Vector.ZERO.sub(this.velocity);
+
         
     }
 
