@@ -28,7 +28,7 @@ class Engine {
 
 		let moved = false;
 
-		if (game.playing) {//TODO: rename
+		if (game.playing) {
 		for (let i=0; i<this.objects.length; i++) {
 			let obj = this.objects[i];
 
@@ -40,7 +40,7 @@ class Engine {
 
 				obj.move(obj.velocity);
 
-
+				/** Collision */
 				for (let j=0; j<this.objects.length; j++) {
                     if (i != j) {
                         let other = this.objects[j];
@@ -73,10 +73,12 @@ class Engine {
 					}
 				}
 				
+				/** limite horizontale */
 				if (obj.origin.x < 0 || obj.origin.x + offset > canvas.width) {
 					obj.velocity = new Vector(-obj.velocity.x, obj.velocity.y);
 				}
 				
+				/** limite verticale */
 				if (obj.origin.y + offset >= canvas.height) {
 					obj.velocity = new Vector(obj.velocity.x, -(obj.velocity.y));
 					obj.setPosition(obj.origin.x, canvas.height-offset);
@@ -92,7 +94,7 @@ class Engine {
 				}
 				
 				
-				/** bouge? */
+				/** Quelqu'un bouge? */
 				if (obj == game.projectiles[0]) {
 					if (obj.velocity.x > 0.5 || obj.velocity.y > 0.5 || obj.velocity.x < -0.5 || obj.velocity.y < -0.5) {
 						moved = true;
@@ -104,7 +106,7 @@ class Engine {
 				}
 				
 				
-			/** FIXME: On supprime le proj si ça bouge plus */
+			/** On supprime le proj si ça bouge plus */
 			if (obj == game.projectiles[0] && game.playing && !this.updating) {
 				console.log(this.objects.length);
 				this.remove(i);
@@ -116,7 +118,7 @@ class Engine {
 		}
 	}
 
-		//pêrsonne bouge
+		//personne ne bouge
 		if (!moved)
 			this.stop();
 

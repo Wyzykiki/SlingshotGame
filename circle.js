@@ -4,29 +4,7 @@ class Circle extends Body {
         this.radius = radius;
 	}
 
-	rotate ( O, angle) {
-        angle *= Math.PI / 180;
-        let xM = this.origin.x - O.x;
-        let yM = this.origin.y - O.y;
-        let x = xM * Math.cos (angle) + yM * Math.sin (angle) + O.x;
-        let y = - xM * Math.sin (angle) + yM * Math.cos (angle) + O.y;
-        return ({x:Math.round (x), y:Math.round (y)});
-    }
-
-	// collisionRect( rect){
-    //     let circleDistance=new Vector(Math.abs(this.origin.x - rect.origin.x),Math.abs(this.origin.y - rect.origin.y));
-
-    //     if (circleDistance.x > (rect.width/2 + this.radius)) { return false; }
-    //     if (circleDistance.y > (rect.height/2 + this.radius)) { return false; }
-
-    //     if (circleDistance.x <= (rect.width/2)) { return true; } 
-    //     if (circleDistance.y <= (rect.height/2)) { return true; }
-
-    //     let cornerDistance_sq = (circleDistance.x - rect.width/2)^2 +
-    //                         (circleDistance.y - rect.height/2)^2;
-
-    //     return (cornerDistance_sq <= (this.radius^2));
-    // }
+	/** detecte si il y a une colision entre un cercle et un rectangle */
     collisionRect( rect){
         let A=new Vector (rect.origin.x+rect.width*Math.cos(rect.orientation%(Math.PI*2)),rect.origin.y+rect.width*Math.sin(rect.orientation%(Math.PI*2)));
         let B=new Vector (rect.origin.x,rect.origin.y);
@@ -53,13 +31,6 @@ class Circle extends Body {
         let M =new Vector(Mx,My);
         let Fff=new Vector ((Ee.x-Mm.x)*this.radius/Math.abs(Ee.x-Mm.x),(Ee.y-Mm.y)*this.radius/Math.abs(Ee.y-Mm.y));
         let Ff=Mm.add(Fff);
-        // console.log("Ee puis Ff");
-        // console.log(Ee);
-        // console.log(Ff);
-        // console.log(Mm);
-        // console.log(A);
-        // console.log(B);
-        // console.log(C);
          let Fx=(d/(a*d-b*c))*(Ff.x-B.x)-(b/(a*d-b*c))*(Ff.y-B.y);
          let Fy=(-c/(a*d-b*c))*(Ff.x-B.x)+(a/(a*d-b*c))*(Ff.y-B.y);
          let F =new Vector(Fx,Fy);
@@ -67,20 +38,23 @@ class Circle extends Body {
 
     }
 
+    /** detecte collision cercle-cercle */
     collisionCircle(c){
-        let d = (this.origin.x-c.origin.x)*(this.origin.x-c.origin.x) + (this.origin.y-c.origin.y)*(this.origin.y-c.origin.y)
-       // console.log(d);
-        //console.log(( (this.radius+c.radius)*( this.radius+c.radius)));
+        let d = (this.origin.x-c.origin.x)*(this.origin.x-c.origin.x) + (this.origin.y-c.origin.y)*(this.origin.y-c.origin.y);
         if (d> ( (this.radius+c.radius)*( this.radius+c.radius))){
             return false;
         }else{
             return true;
         }
     }
+
+    /** agit après une collision cercle cercle */
     hasCollCircle(c){
         this.velocity=new Vector(-this.velocity.x/2,-this.velocity.y/2);
         c.velocity=Vector.ZERO.sub(this.velocity);
     }
+
+    /** gere une collision rect cercle */
     hasCollRect(Rect,where){
         
         if (where=="top"){
@@ -119,6 +93,8 @@ class Circle extends Body {
         }
 
     }
+
+    /** detecte ou l'impact a eu leiu entre un cercle et un rectangle */
     where(rect){
         let center = new Vector ((rect.origin.x+(rect.width*Math.cos(rect.orientation%(Math.PI*2))+rect.height*Math.cos((rect.orientation+Math.PI/2)%(Math.PI*2)))/2,rect.origin.y+((rect.width*Math.sin(rect.orientation%(Math.PI*2)))+rect.height*Math.sin((rect.orientation+Math.PI/2)%(Math.PI*2)))/2));
         let temp=center.sub(this.origin);

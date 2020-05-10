@@ -7,17 +7,19 @@ class Rect extends Body {
         
     }
 
-
+    /** copy un rectangle */
     copy(){
         return new Rect(this.origin,this.width,this.height,this.mass,this.orientation/Math.PI*180);
     }
 
+    /** rotate un rectangle par rapport au point origine */
     rotate(o){
         this.orientation+=o*Math.PI/180;
         
 
     }
 
+    /** renvoi si un point est dans un rectancgle ou non */
     isInRect(e){
         let A=new Vector (this.origin.x+this.width*Math.cos(this.orientation%(Math.PI*2)),this.origin.y+this.width*Math.sin(this.orientation%(Math.PI*2)));
         let B=new Vector (this.origin.x,this.origin.y);
@@ -26,12 +28,12 @@ class Rect extends Body {
         let b=A.x-B.x;
         let c=C.y-B.y;
         let d=A.y-B.y;
-        //this.where ???
         let E=(d/(a*d-b*c))*(e.x-B.x)-(b/(a*d-b*c))*(e.y-B.y);
         let F=(-c/(a*d-b*c))*(e.x-B.x)+(a/(a*d-b*c))*(e.y-B.y);
         return E >= 0 && E<=1 &&  F >= 0 && F<=1;
     }
    
+    /** detecte si il y a une collision rectangle -rectangle */
     collisionRect(rect){
         let r1= this.copy();
         let r2 = rect.copy();
@@ -45,6 +47,7 @@ class Rect extends Body {
         return r1.isInRect(A)||r1.isInRect(B)||r1.isInRect(C)||r1.isInRect(D);
     }
     
+    /** detecte un collision rectangle-cercle */
     collisionCircle( circle){
         let A=new Vector (this.origin.x+this.width*Math.cos(this.orientation%(Math.PI*2)),this.origin.y+this.width*Math.sin(this.orientation%(Math.PI*2)));
         let B=new Vector (this.origin.x,this.origin.y);
@@ -71,38 +74,14 @@ class Rect extends Body {
         let M =new Vector(Mx,My);
         let Fff=new Vector ((Ee.x-Mm.x)*circle.radius/Math.abs(Ee.x-Mm.x),(Ee.y-Mm.y)*circle.radius/Math.abs(Ee.y-Mm.y));
         let Ff=Mm.add(Fff);
-        // console.log("Ee puis Ff");
-        // console.log(Ee);
-        // console.log(Ff);
 
          let Fx=(d/(a*d-b*c))*(Ff.x-B.x)-(b/(a*d-b*c))*(Ff.y-B.y);
          let Fy=(-c/(a*d-b*c))*(Ff.x-B.x)+(a/(a*d-b*c))*(Ff.y-B.y);
          let F =new Vector(Fx,Fy);
         return this.isInRect(Ff);
-         //     let test=M.add(F);
-    //     console.log(test);
-    //     console.log(test.norm());
-    //     let DM = D.sub(M);
-    //     let CM = C.sub(M);
-    //     let BM = B.sub(M);
-    //     let AM = A.sub(M);
-        
-    //     console.log(M);
-    //     console.log(F);
-    //     console.log(DM.norm())
-    // if (DM.norm()<=test.norm()){return true;}
-    // console.log(CM.norm())
-    // if (CM.norm()<=test.norm()){return true;}
-    // console.log(BM.norm())
-    // if (BM.norm()<=test.norm()){return true;}
-    
-    // if (AM.norm()<=test.norm()){return true;}
-    
-    // if (F.x>=A.x && F.x<=C.x && F.y<=A.x && F.x>=C.y ){return true;}
-    // if (M.x>=A.x && M.x<=C.x && M.y<=A.x && M.x>=C.y ){return true;}
-    
     }
 
+    /** detetcte ou a eu leiu al collision rectangle cercle */
     where(cercle){
         let center = new Vector ((this.origin.x+(this.width*Math.cos(this.orientation%(Math.PI*2))+this.height*Math.cos((this.orientation+Math.PI/2)%(Math.PI*2)))/2,this.origin.y+((this.width*Math.sin(this.orientation%(Math.PI*2)))+this.height*Math.sin((this.orientation+Math.PI/2)%(Math.PI*2)))/2));
         let temp=center.sub(cercle.origin);
@@ -147,6 +126,8 @@ class Rect extends Body {
             return "right-top";
         }
     }
+
+    /** active les actions sur nos object en cas de collision rectangle-circle */
     hasCollCircle(c){
         this.velocity=new Vector(-this.velocity.x/2,-this.velocity.y/2);
         c.velocity=Vector.ZERO.sub(this.velocity);
@@ -154,7 +135,7 @@ class Rect extends Body {
         
     }
 
-
+    /** fonction utilisé du tp2 */
     hasCollRect (b) {
 
         let mdiff = this.mDiff(b);
@@ -215,15 +196,17 @@ class Rect extends Body {
             }
         
     }
+    /** fonction utilisé du tp2 */
     toNew(){
 
     }
+    /** fonction utilisé du tp2 */
     mDiff (r) {
         let orig = new Vector (r.origin.x - this.origin.x - this.width,
 			   r.origin.y - this.origin.y - this.height);
         return new Rect(orig, this.width + r.width, this.height + r.height);
     }
-
+    /** fonction utilisé du tp2 */
     hasOrigin () {
         return (this.origin.x < 0 && this.origin.x + this.width > 0)
         	&& (this.origin.y < 0 && this.origin.y + this.height > 0);

@@ -34,6 +34,7 @@ class Game {
 		this.playing = false;
 	}
 
+	/** Mets a jour les objets et gere la victoire */
 	update() {
 		this.engine.update();
 
@@ -66,6 +67,7 @@ class Game {
 		}
 	}
 
+	/** Appel du rendu */
 	render() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		this.renderer.render();
@@ -100,6 +102,7 @@ class Game {
 		}
 	}
 
+	/** Reset du niveau */
 	reset() {
 		for (let i=0; i<this.engine.objects.length; i++) {
 			if (this.engine.objects[i] == this.projectiles[0]) {
@@ -217,7 +220,7 @@ function throwUpHandler(ev) {
 	
 
 	
-	/** TODO: Démare le moteur */
+	/** Démare le moteur */
 	game.engine.start();
 	game.playing = true;
 
@@ -246,9 +249,3 @@ function throwMoveHandler(ev) {
 		}
 	}
 }
-
-//Creer requete xhr
-//tant que pas revenue chargement 
-//attendre quel retourne
-//construire Game() avec la reponse
-//et lancer affichage

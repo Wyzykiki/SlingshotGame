@@ -58,6 +58,7 @@ class Menu {
 	}
 };
 
+/** Menu titre */
 function titleHandler(ev) {
 	let x = ev.offsetX;
 	let y = ev.offsetY;
@@ -68,6 +69,7 @@ function titleHandler(ev) {
 	}
 }
 
+/** Menu sélection de niveau */
 function selecHandler(ev) {
 	let x = ev.offsetX;
 	let y = ev.offsetY;
@@ -90,6 +92,7 @@ function selecHandler(ev) {
 	}
 }
 
+/** Menu de rafraichissement de niveau */
 function refreshHandler(ev) {
 	let x = ev.offsetX;
 	let y = ev.offsetY;
