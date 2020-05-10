@@ -48,35 +48,47 @@ class Engine {
 
                         if (other instanceof Rect) {
                             if (obj.collisionRect(other)) {
-								console.log("BAAAAAAAAAAAAAM");
-								console.log(obj.where(other));
-								console.log(obj.origin.x);
-								console.log(other.origin.x);
+								// console.log("BAAAAAAAAAAAAAM");
+								// console.log(obj.where(other));
+								// console.log(obj.origin.x);
+								// console.log(other.origin.x);
                                 obj.hasCollRect(other, obj.where(other));
                             }
                         } 
-                        if (other instanceof Circle) {
+                        if (other instanceof Target) {
                             if (obj.collisionCircle(other)) {
-                                obj.hasCollCircle(other);
-                            }
-                        }
+								obj.hasCollCircle(other);
+								// if (other instanceof Target) {
+									// this.remove(j);
+									// }
+								}
+							}
+						console.log(this.objects);
                     }
                 }
 
+				let offset = 0
+				if (obj instanceof Circle) {
+					offset = obj.radius;
+				} else {
+					if (obj instanceof Rect) {
+						offset = obj.height;
+					}
+				}
 				
-				if (obj.origin.x < 0 || obj.origin.x > canvas.width) {
+				if (obj.origin.x < 0 || obj.origin.x + offset > canvas.width) {
 					obj.velocity = new Vector(-obj.velocity.x, obj.velocity.y);
 					//this.remove(i);
 				}
 				
-				if (obj.origin.y < 0 || obj.origin.y >= canvas.height) {
+				if (obj.origin.y < 0 || obj.origin.y + offset >= canvas.height) {
 					obj.velocity = new Vector(obj.velocity.x, -(obj.velocity.y));
-					obj.setPosition(obj.origin.x, 400);
+					obj.setPosition(obj.origin.x, canvas.height-offset);
 				}
 				
 				/** Freine les objets */
-				if (obj.origin.y == 400) {
-					obj.velocity = obj.velocity.mult(0.8);
+				if (obj.origin.y == canvas.height-offset) {
+					obj.velocity = obj.velocity.mult(0.85);
 				}
 				
 				

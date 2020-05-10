@@ -19,29 +19,46 @@ let demo = [
 	{
 		"obstacles" : [
 			{
-				"x" : 0,
-				"y" : 0,
-				"width" : 10,
-				"height" : 10
+				"x" : 400,
+				"y" : 381,
+				"type" : "plank",
+				"horizontal" : false
+			},
+			{
+				"x" : 500,
+				"y" : 381,
+				"type" : "plank",
+				"horizontal" : false
+			},
+			{
+				"x" : 410,
+				"y" : 361,
+				"type" : "plank",
+				"horizontal" : true
+			},
+			{
+				"x" : 435,
+				"y" : 311,
+				"type" : "block"
 			}
 		],
 		"targets" : [
 			{
-				"x" : 400,
-				"y" : 100,
+				"x" : 460,
+				"y" : 463,
 				"type" : "basic"
 			},
 			{
 				"x" : 600,
-				"y" : 300,
+				"y" : 456,
 				"type" : "strong"
 			}
 		],
 		"sling" : {
 			"x" : 50,
-			"y" : 350,
+			"y" : 431,
 			"radius" : 35,
-			"rappel" : 22
+			"rappel" : 27
 		},
 		"projectiles" : ["basic"]
 	}

@@ -109,7 +109,7 @@ class Rect extends Body {
         if (this.orientation%(Math.PI)==0 ){
             
             if (temp.x>=center.x-this.width/2 && temp.x<=center.x+this.width/2 ){
-                if(temps.y<center.y){
+                if(temp.y<center.y){
                     return "bot";
                 } else {
                     return "top";
@@ -123,7 +123,7 @@ class Rect extends Body {
         }else if (this.orientation%(Math.PI/2)==0 ){
             if (temp.x>=center.x-this.height/2 && temp.x<=center.x+this.height/2 ){
                 
-                if(temps.y<center.y){
+                if(temp.y<center.y){
                     return "bot";
                 } else {
                     return "top";
@@ -136,12 +136,12 @@ class Rect extends Body {
             } 
         }else {
             if (temp.y<center.y){
-                if (temps.x<center.x){
+                if (temp.x<center.x){
                     return "left-bot";
                 }
                 return "right-bot";
             }
-            if (temps.x<center.x){
+            if (temp.x<center.x){
                 return "left-top";
             }
             return "right-top";
@@ -195,19 +195,19 @@ class Rect extends Body {
 
                 // (2) On calcule l'impulsion j :
                 let v = this.velocity.sub(b.velocity);
-                let e = Constants.elasticity; // pour les étudiants, juste faire let e = 1;
+                let e =  1;
 
                 let j = -(1 + e) * v.dot(n) / (this.invMass + b.invMass);
 
                 // (3) On calcule les nouvelle vitesse:
-                this.velocity.add(n.mult(j  * this.invMass));
-                b.velocity.sub(n.mult(j * b.invMass));
+                let new_v=this.velocity.add(n.mult(j  * this.invMass*0.8));
+                let new_bv=b.velocity.sub(n.mult(j * b.invMass*0.8));
 
                 b.setCollision(true);
                 this.setCollision(true);
 
-                // this.velocity= new_v; 
-                // rect.velocity=new_bv ;
+                this.velocity= new_v; 
+                b.velocity=new_bv ;
 
             } else {
                 return null;
@@ -238,6 +238,7 @@ class RectSprite extends Rect {
 	draw() {
 		ctx.save();
         
+        ctx.fillStyle = this.color;
         ctx.translate(this.origin.x,this.origin.y);
         ctx.rotate(this.orientation);
 		ctx.fillRect(0, 0, this.width, this.height);

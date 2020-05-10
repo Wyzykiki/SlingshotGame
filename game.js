@@ -22,6 +22,8 @@ class Game {
 		this.throwStart = null;
 		this.throwStop = null;
 
+		/** Level courrant */
+		this.curLevel = 0;
 
 		//le lancer a ete fait
 		this.playing = false;
@@ -29,6 +31,19 @@ class Game {
 
 	update() {
 		this.engine.update();
+
+		// let win = true;
+        // for (let i=0; i<this.engine.objects.length; i++) {
+        //     let obj = this.engine.objects[i];
+        //     if (obj instanceof Target){
+        //         win = false;
+        //     }
+		// }
+		
+		// if (win && this.curLevel != 0) {
+		// 	this.curLevel++;
+		// 	this.initLevel(this.curLevel);
+		// }
 	}
 
 	render() {
@@ -56,6 +71,7 @@ class Game {
 
 	/** Initialisation des variables de l'environnement pour le niveau sélectionné. */
 	initLevel(n) {
+		this.curLevel = n;
 		let level = this.levels[n];
 		this.sling = level.sling;
 
@@ -72,28 +88,43 @@ class Game {
 		}
 
 		this.newProjectile();
-		let r1 = new RectSprite(new Vector(400,400),50,50,1,270,"rgba(0,255,0,0.5)");
+		let r1 = new RectSprite(new Vector(700,350),50,50,1,0,"rgba(0,255,0,0.5)");
+		let r2 = new RectSprite(new Vector(700,220),50,50,1,0,"rgba(0,255,0,0.5)");
+		let r3 = new RectSprite(new Vector(550,350),50,50,1,0,"rgba(0,255,0,0.5)");
 		this.engine.add(r1);
+		this.engine.add(r2);
+		// this.engine.add(r3);
 
 		/** Créer les cibles */
-		// for (let i=0; i<level.targets.length; i++) {
-		// 	let target = null
-		// 	switch (level.targets[i].type) {
-		// 		case "basic":
-		// 			target = new BasicTarget(level.targets[i].x, level.targets[i].y);
-		// 			break;
-		// 		case "strong":
-		// 			target = new StrongTarget(level.targets[i].x, level.targets[i].y);
-		// 			break;
-		// 		default:
-		// 			break;
-		// 	}
-		// 	this.engine.add(target);
-		// }
+		for (let i=0; i<level.targets.length; i++) {
+			let target = null
+			switch (level.targets[i].type) {
+				case "basic":
+					target = new BasicTarget(level.targets[i].x, level.targets[i].y);
+					break;
+				case "strong":
+					target = new StrongTarget(level.targets[i].x, level.targets[i].y);
+					break;
+				default:
+					break;
+			}
+			this.engine.add(target);
+		}
 	
 		/** Créer les obstacles */
 		for (let i=0; i<level.obstacles.length; i++) {
-			
+			let obstacle = null;
+			switch (level.obstacles[i].type) {
+				case "plank":
+					obstacle = new Plank(level.obstacles[i].x, level.obstacles[i].y, level.obstacles[i].horizontal);
+					break;
+				case "block":
+					obstacle = new Block(level.obstacles[i].x, level.obstacles[i].y);
+					break;
+				default:
+					break;
+			}
+			this.engine.add(obstacle);
 		}
 
 		canvas.addEventListener("mousedown", throwDownHandler);
@@ -123,8 +154,8 @@ function throwUpHandler(ev) {
 	/** Calcul  */
 	game.throwStop = new Vector(game.projectiles[0].origin.x, game.projectiles[0].origin.y);
 
-	let vitesseX = -(game.throwStop.x-game.throwStart.x)/game.sling.radius * game.sling.rappel;
-	let vitesseY = -(game.throwStop.y-game.throwStart.y)/game.sling.radius * game.sling.rappel;
+	let vitesseX = -(game.throwStop.x-game.throwStart.x)/game.sling.radius * game.sling.rappel * game.projectiles[0].invMass;
+	let vitesseY = -(game.throwStop.y-game.throwStart.y)/game.sling.radius * game.sling.rappel * game.projectiles[0].invMass;
 	game.projectiles[0].applyForce(new Vector(vitesseX, vitesseY));
 	
 	

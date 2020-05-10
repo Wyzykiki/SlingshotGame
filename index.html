@@ -9,13 +9,15 @@
     <script type="text/javascript" src="circle.js" ></script>
     <script type="text/javascript" src="projectile.js" ></script>
     <script type="text/javascript" src="target.js" ></script>
+    <script type="text/javascript" src="obstacle.js" ></script>
     <script type="text/javascript" src="menu.js" ></script>
     <script type="text/javascript" src="game.js" ></script>
     <script type="text/javascript" src="renderer.js" ></script>
     <script type="text/javascript" src="engine.js" ></script>
   </head>
   <body>
-  <canvas id="canvas" width="800" height="400" style="background-color: brown; "></canvas>
+  <canvas id="bg" width="800" height="481" style="background-image: url('Background.png'); "></canvas>
+  <canvas id="canvas" width="800" height="481"style="position:absolute; left:8;"></canvas>
   <div id="fps"></div>
   <div id="cpt"></div>
   <button onclick="debug = !debug;">Debug</button>
